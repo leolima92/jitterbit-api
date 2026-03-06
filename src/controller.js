@@ -42,7 +42,7 @@ module.exports = {
     }
   },
 
-
+  // GET /order/list - Listar todos os pedidos
   async listOrders(req, res) {
     try {
       const orders = await Order.findAll({ 

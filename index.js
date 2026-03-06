@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 app.use(routes);
 
-// Sincroniza o banco e sobe o servidor
+//Sube o server após sincronização
 sequelize.sync().then(() => {
   console.log("Banco SQL (SQLite) pronto!");
   app.listen(3000, () => console.log("Servidor rodando na porta 3000"));
