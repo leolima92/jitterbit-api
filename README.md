@@ -56,7 +56,6 @@ Invoke-RestMethod -Uri 'http://localhost:3000/order/123' -Method Get -Headers @{
 📖 Documentação Swagger
 Acesse a interface interativa para testar os endpoints diretamente pelo navegador:
 http://localhost:3000/api-docs
-```
 
 ## 📸 Evidências de Teste
 
