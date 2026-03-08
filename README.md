@@ -1,57 +1,61 @@
-# Desafio Técnico - API de Pedidos Jitterbit
+Desafio Técnico - API de Pedidos Jitterbit
+Esta API foi desenvolvida como parte do processo seletivo da Jitterbit. O objetivo do projeto é receber pedidos em um formato JSON específico, realizar a transformação dos dados (Mapping) e persistir as informações em um banco de dados relacional.
 
-Esta API foi desenvolvida como parte do processo seletivo da Jitterbit. O objetivo do projeto é receber pedidos em um formato JSON específico, realizar a transformação dos dados (**Mapping**) e persistir as informações em um banco de dados relacional.
+🚀 Tecnologias Utilizadas
+Node.js: Plataforma de execução do servidor.
 
-## Tecnologias Utilizadas
+Express: Framework para criação das rotas da API.
 
-* **Node.js**: Plataforma de execução do servidor.
-* **Express**: Framework para criação das rotas da API.
-* **Sequelize**: ORM para gerenciamento e modelagem do banco de dados.
-* **SQLite**: Banco de dados relacional que roda em arquivo local, facilitando a execução sem dependências externas.
-* **Nodemon**: Ferramenta para reinicialização automática do servidor durante o desenvolvimento.
+Sequelize: ORM para gerenciamento e modelagem do banco de dados.
 
-##  Como Rodar o Projeto
+SQLite: Banco de dados relacional que roda em arquivo local.
 
-1. **Instale as dependências**: No terminal, dentro da pasta do projeto, execute:
-```bash
+JWT (JSON Web Token): Autenticação para proteção dos endpoints.
+
+Swagger: Documentação interativa da API.
+
+🛠️ Como Rodar o Projeto
+Instale as dependências:
+
+Bash
+
 npm install
+Inicie o servidor:
 
-```
+Bash
 
-
-2. **Inicie o servidor**:
-```bash
 npm run dev
+O servidor iniciará na porta 3000 e o banco de dados será criado automaticamente no arquivo database.sqlite.
 
-```
+🔐 Autenticação e Endpoints
+Para garantir a segurança, as rotas de pedidos exigem um token de acesso.
 
+POST /login: Gera o token de acesso (Usuário: admin / Senha: jitterbit123).
 
-*O servidor iniciará na porta **3000** e o banco de dados será criado automaticamente no arquivo **database.sqlite***.
+POST /order: Recebe um pedido e realiza o mapeamento dos campos (Protegido).
 
-## 📌 Endpoints da API
+GET /order/:orderId: Busca um pedido específico pelo ID (Protegido).
 
-* **POST `/order**`: Recebe um pedido e realiza o mapeamento dos campos.
-* **GET `/order/:orderId**`: Busca um pedido específico pelo ID informado.
-* **GET `/order/list**`: Lista todos os pedidos cadastrados no sistema.
+GET /order/list: Lista todos os pedidos cadastrados (Protegido).
 
-## Como Realizar os Testes
+🧪 Como Realizar os Testes
+Utilize os comandos abaixo no PowerShell para validar o fluxo completo:
 
-Para validar a API e o funcionamento do **Mapping** (transformação de campos como `numeroPedido` para `orderId`), utilize os comandos abaixo no **PowerShell**:
+1. Obter Token de Acesso (Login)
+PowerShell
 
-### 1. Criar um Pedido (POST)
+$auth = Invoke-RestMethod -Uri 'http://localhost:3000/login' -Method Post -ContentType 'application/json' -Body '{"username": "admin", "password": "jitterbit123"}'
+2. Criar um Pedido (POST)
+PowerShell
 
-```powershell
-Invoke-RestMethod -Uri 'http://localhost:3000/order' -Method Post -ContentType 'application/json' -Body '{"numeroPedido": "123", "valorTotal": 1000, "dataCriacao": "2024-01-01T10:00:00Z", "items": [{"idItem": "1", "quantidadeItem": 1, "valorItem": 1000}]}'
+Invoke-RestMethod -Uri 'http://localhost:3000/order' -Method Post -Headers @{Authorization="Bearer $($auth.token)"} -ContentType 'application/json' -Body '{"numeroPedido": "123", "valorTotal": 1000, "items": [{"idItem": "1", "quantidadeItem": 1, "valorItem": 1000}]}'
+3. Buscar o Pedido Criado (GET)
+PowerShell
 
-```
-
-*(Você também pode utilizar o ID original do teste: `v10089015vdb-01`)*.
-
-### 2. Buscar o Pedido Criado (GET)
-
-```powershell
-Invoke-RestMethod -Uri 'http://localhost:3000/order/123' -Method Get
-
+Invoke-RestMethod -Uri 'http://localhost:3000/order/123' -Method Get -Headers @{Authorization="Bearer $($auth.token)"}
+📖 Documentação Swagger
+Acesse a interface interativa para testar os endpoints diretamente pelo navegador:
+http://localhost:3000/api-docs
 ```
 
 ## 📸 Evidências de Teste
